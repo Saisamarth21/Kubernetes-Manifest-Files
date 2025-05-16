@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-deployment
+  namespace: ecommerce-namespace
+spec:
+  #replicas: 2                            # initial replica count; HPA will adjust between 2–5
+  selector:
+    matchLabels:
+      app: ecommerce
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1                  # at most 1 Pod down during update
+      maxSurge: 1                        # at most 1 extra Pod above replicas
+  template:
+    metadata:
+      labels:
+        app: ecommerce
+    spec:
+      containers:
+      - name: ecommerce-container
+        image: saisamarth21/e-commerce:3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 2000            # internal port only; no hostPort binding
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
