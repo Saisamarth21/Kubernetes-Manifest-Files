@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-backend-deployment
+  namespace: lms-namespace
+spec:
+  selector:
+    matchLabels:
+      app: lms-backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: lms-backend
+    spec:
+      containers:
+        - name: lms-backend-container
+          image: saisamarth21/lms-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4000
+          env:
+            - name: PORT
+              value: "4000"
+            - name: MONGO_CONNECTION_URL
+              value: mongodb://lms-mongo-service:27017/lms
+            - name: JWT_SECRET
+              value: your_jwt_secret_here
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

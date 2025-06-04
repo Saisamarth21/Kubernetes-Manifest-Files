@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-mongo-deployment
+  namespace: lms-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lms-mongo
+  template:
+    metadata:
+      labels:
+        app: lms-mongo
+    spec:
+      containers:
+        - name: lms-mongo-container
+          image: mongo:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          # NOTE: For production, you’d typically mount a PersistentVolumeClaim here. 
+          # We omit that to mirror your ecommerce example.

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-mongo-express-deployment
+  namespace: lms-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lms-mongo-express
+  template:
+    metadata:
+      labels:
+        app: lms-mongo-express
+    spec:
+      containers:
+        - name: lms-mongo-express-container
+          image: mongo-express:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          env:
+            - name: ME_CONFIG_BASICAUTH
+              value: "false"
+            - name: ME_CONFIG_MONGODB_ENABLE_ADMIN
+              value: "true"
+            - name: ME_CONFIG_MONGODB_SERVER
+              value: lms-mongo-service

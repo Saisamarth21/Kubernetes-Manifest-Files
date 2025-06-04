@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# frontend-deployment.yaml (updated)
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-frontend-deployment
+  namespace: lms-namespace
+spec:
+  selector:
+    matchLabels:
+      app: lms-frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: lms-frontend
+    spec:
+      containers:
+        - name: lms-frontend-container
+          image: saisamarth21/lms-frontend:latest
+          imagePullPolicy: IfNotPresent
+
+          # ─── OVERRIDE ENTRYPOINT SO VITE BINDS TO 0.0.0.0 ────────────────
+          command:
+            - sh
+            - -c
+            - |
+              # Start Vite dev server on all interfaces.
+              npm run dev -- --host 0.0.0.0
+          # ───────────────────────────────────────────────────────────────────
+
+          ports:
+            - containerPort: 5173
+
+          resources:
+            requests:
+              cpu:    "200m"
+              memory: "512Mi"
+            limits:
+              cpu:    "500m"
+              memory: "5Gi"
