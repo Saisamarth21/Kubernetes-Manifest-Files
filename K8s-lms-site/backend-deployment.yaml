@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: lms-backend-container
-          image: saisamarth21/lms-backend:latest
+          image: saisamarth21/lms-backend:1.0.18
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4000

@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: lms-frontend-container
-          image: saisamarth21/lms-frontend:latest
+          image: saisamarth21/lms-frontend:1.0.18
           imagePullPolicy: IfNotPresent
 
           # ─── OVERRIDE ENTRYPOINT SO VITE BINDS TO 0.0.0.0 ────────────────
