@@ -1,0 +1,29 @@
+# mongo-pv-pvc.yaml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lms-mongo-pv
+  namespace: lms-namespace
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /home/ubuntu/lms-data
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lms-mongo-pvc
+  namespace: lms-namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: lms-mongo-pv
